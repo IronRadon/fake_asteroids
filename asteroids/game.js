@@ -6,6 +6,7 @@
     this.asteroids = [];
     this.interval = null;
     this.ship = new Asteroids.Ship(Game.DIM_X/2, Game.DIM_Y/2);
+    this.bullets = [];
   };
 
   Game.prototype.addAsteroids = function(numAsteroids) {
@@ -25,13 +26,18 @@
     this.asteroids.forEach(function(asteroid) {
       asteroid.draw(ctx);
     });
+
+    this.bullets.forEach(function(bullet) {
+      bullet.draw(ctx);
+    })
   };
 
   Game.prototype.move = function() {
     this.ship.move();
     var tempRoids = [];
+    var tempBullets = [];
 
-    this.asteroids.forEach(function(asteroid, idx) {
+    this.asteroids.forEach(function(asteroid) {
       asteroid.move();
 
       if (((asteroid.xpos + asteroid.radius) < 0 ||
@@ -44,6 +50,20 @@
     });
 
     this.asteroids = tempRoids;
+
+    this.bullets.forEach(function(bullet) {
+      bullet.move();
+
+      if (((bullet.xpos + bullet.radius) < 0 ||
+           (bullet.xpos - bullet.radius) > Game.DIM_X) ||
+          ((bullet.ypos + bullet.radius) < 0 ||
+           (bullet.ypos - bullet.radius) > Game.DIM_Y)) {
+      } else {
+        tempBullets.push(bullet);
+      }
+    });
+
+    this.bullets = tempBullets;
   };
 
   Game.prototype.step = function() {
@@ -54,17 +74,22 @@
 
   Game.prototype.start = function() {
     var game = this;
-    key('up',    function() { game.ship.yvel -= 0.1 });
-    key('down',  function() { game.ship.yvel += 0.1 });
-    key('left',  function() { game.ship.xvel -= 0.1 });
-    key('right', function() { game.ship.xvel += 0.1 });
-
     this.addAsteroids(10);
+    this.addKeyBindings();
 
     this.interval = setInterval(function() {
       game.step();
     }, Game.INTERVAL);
   };
+
+  Game.prototype.addKeyBindings = function() {
+    var game = this
+    key('up',    function() { game.ship.yvel -= 0.1 });
+    key('down',  function() { game.ship.yvel += 0.1 });
+    key('left',  function() { game.ship.xvel -= 0.1 });
+    key('right', function() { game.ship.xvel += 0.1 });
+    key('space', function() { game.fireBullet(); })
+  }
 
   Game.prototype.checkCollisions = function(){
     var game = this;
@@ -74,6 +99,14 @@
         //game.stop();
       }
     });
+  }
+
+  Game.prototype.fireBullet = function() {
+    var bullet = this.ship.fireBullet();
+    if (bullet){
+      console.log(bullet);
+      this.bullets.push(bullet);
+    }
   }
 
   Game.prototype.stop = function(){
