@@ -2,7 +2,6 @@
   var Asteroids = root.Asteroids = (root.Asteroids || {});
 
   var Bullet = Asteroids.Bullet = function(xpos, ypos, xvel, yvel, game) {
-    this.game = game;
 
     Asteroids.MovingObject.call(this,
                                 xpos,
@@ -11,19 +10,30 @@
                                 yvel,
                                 Bullet.RADIUS,
                                 Bullet.COLOR);
+    this.game = game;
   }
 
   Bullet.inherits(Asteroids.MovingObject);
 
+  Bullet.prototype.move = function() {
+    Asteroids.MovingObject.prototype.move.call(this);
+    this.hitAsteroids();
+  }
+
   Bullet.prototype.hitAsteroids = function () {
     var bullet = this;
-    var game = this.game
 
-    game.asteroids.forEach(function(asteroid) {
-      if (asteroid.isCollidedWith(bullet)) {
-      //  game.
+    this.game.asteroids.forEach(function(asteroid) {
+      if (bullet.isCollidedWith(asteroid)) {
+        console.log("hit")
+        bullet.remove();
+        asteroid.remove();
       }
     })
+  };
+
+  Bullet.prototype.remove = function() {
+    this.game.removeBullet(this);
   };
 
   Bullet.RADIUS = 12;
