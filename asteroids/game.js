@@ -1,12 +1,14 @@
 (function(root) {
   var Asteroids = root.Asteroids = (root.Asteroids || {});
 
-  var Game = Asteroids.Game = function (ctx) {
+  var Game = Asteroids.Game = function (ctx, canv) {
     this.ctx = ctx;
     this.asteroids = [];
     this.interval = null;
     this.ship = new Asteroids.Ship(Game.DIM_X/2, Game.DIM_Y/2);
     this.bullets = [];
+    canv.width  = Game.DIM_X;
+    canv.height = Game.DIM_Y;
   };
 
   Game.prototype.addAsteroids = function(numAsteroids) {
@@ -121,6 +123,6 @@
   }
 
   Game.INTERVAL = 30;
-  Game.DIM_X = 640;
-  Game.DIM_Y = 480;
+  Game.DIM_X = 800;
+  Game.DIM_Y = 600;
 })(this);
