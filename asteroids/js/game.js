@@ -98,7 +98,7 @@
     this.asteroids.forEach(function(asteroid){
       if (asteroid.isCollidedWith(game.ship)) {
         //alert("GAME OVER!!!!")
-        // game.stop();
+        game.stop();
       }
     });
   }
