@@ -8,7 +8,7 @@
     }
 
     var Asteroid = Asteroids.Asteroid = function(xpos, ypos, xvel, yvel){
-      MovingObject.call(this,
+      Asteroids.MovingObject.call(this,
                         xpos,
                         ypos,
                         xvel,
@@ -20,5 +20,16 @@
     Asteroid.inherits(Asteroids.MovingObject);
     Asteroid.COLOR = "#FF4657";
     Asteroid.RADIUS = 63;
+
+    Asteroid.randomAsteroid = function(dimX, dimY){
+      xpos = Math.random() * dimX;
+      ypos = Math.random() * dimY;
+
+      return new Asteroid(xpos, ypos, randomVec(), randomVec());
+    }
+
+    var randomVec = function () {
+      return (Math.random() * 10) - 5;
+    };
 
 })(this);
