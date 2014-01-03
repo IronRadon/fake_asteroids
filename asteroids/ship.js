@@ -18,13 +18,16 @@
    };
 
    Ship.prototype.fireBullet = function(game) {
-     var speed = Math.sqrt(Math.pow(this.xvel, 2) + Math.pow(this.yvel, 2));
+     var norm = Math.sqrt(Math.pow(this.xvel, 2) + Math.pow(this.yvel, 2));
+
 
      if (!(this.xvel == 0 && this.yvel == 0)) {
+      var multiplier = Asteroids.Bullet.SPEED / norm;
+
        var bullet = new Asteroids.Bullet(this.xpos,
                                          this.ypos,
-                                         this.xvel * speed,
-                                         this.yvel * speed,
+                                         this.xvel * multiplier,
+                                         this.yvel * multiplier,
                                          game);
        return bullet;
      }
