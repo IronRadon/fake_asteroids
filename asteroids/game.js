@@ -102,9 +102,8 @@
   }
 
   Game.prototype.fireBullet = function() {
-    var bullet = this.ship.fireBullet();
+    var bullet = this.ship.fireBullet(this);
     if (bullet){
-      console.log(bullet);
       this.bullets.push(bullet);
     }
   }

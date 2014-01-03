@@ -17,14 +17,15 @@
      this.yvel += yimp;
    };
 
-   Ship.prototype.fireBullet = function() {
+   Ship.prototype.fireBullet = function(game) {
      var speed = Math.sqrt(Math.pow(this.xvel, 2) + Math.pow(this.yvel, 2));
 
      if (!(this.xvel == 0 && this.yvel == 0)) {
        var bullet = new Asteroids.Bullet(this.xpos,
                                          this.ypos,
                                          this.xvel * speed,
-                                         this.yvel * speed);
+                                         this.yvel * speed,
+                                         game);
        return bullet;
      }
    };
