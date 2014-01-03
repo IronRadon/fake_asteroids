@@ -16,7 +16,8 @@
   };
 
   Game.prototype.draw = function() {
-    this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+    this.ctx.fillStyle = '#123234'
+    this.ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
     var ctx = this.ctx;
     this.ship.draw(ctx);
@@ -28,9 +29,21 @@
 
   Game.prototype.move = function() {
     this.ship.move();
-    this.asteroids.forEach(function(asteroid) {
+    var tempRoids = [];
+
+    this.asteroids.forEach(function(asteroid, idx) {
       asteroid.move();
+
+      if (((asteroid.xpos + asteroid.radius) < 0 ||
+           (asteroid.xpos - asteroid.radius) > Game.DIM_X) ||
+          ((asteroid.ypos + asteroid.radius) < 0 ||
+           (asteroid.ypos - asteroid.radius) > Game.DIM_Y)) {
+      } else {
+        tempRoids.push(asteroid);
+      }
     });
+
+    this.asteroids = tempRoids;
   };
 
   Game.prototype.step = function() {
@@ -41,6 +54,10 @@
 
   Game.prototype.start = function() {
     var game = this;
+    key('up',    function() { game.ship.yvel -= 0.1 });
+    key('down',  function() { game.ship.yvel += 0.1 });
+    key('left',  function() { game.ship.xvel -= 0.1 });
+    key('right', function() { game.ship.xvel += 0.1 });
 
     this.addAsteroids(10);
 
@@ -53,8 +70,8 @@
     var game = this;
     this.asteroids.forEach(function(asteroid){
       if (asteroid.isCollidedWith(game.ship)) {
-        alert("GAME OVER!!!!")
-        this.stop();
+        //alert("GAME OVER!!!!")
+        //game.stop();
       }
     });
   }

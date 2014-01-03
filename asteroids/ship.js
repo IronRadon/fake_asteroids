@@ -10,6 +10,12 @@
                                  Ship.RADIUS,
                                  Ship.COLOR)
    }
+
+   Ship.prototype.impulse = function(ximp, yimp) {
+     this.xvel += ximp;
+     this.yvel += yimp;
+   };
+
    Ship.RADIUS = 8;
    Ship.COLOR = "#7dabca";
 
