@@ -26,7 +26,7 @@
     })
   };
 
-  Bullet.RADIUS = 63;
+  Bullet.RADIUS = 2;
   Bullet.COLOR = "#abef86";
 }
 )(this);

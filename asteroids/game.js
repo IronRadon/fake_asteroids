@@ -32,6 +32,7 @@
     })
   };
 
+  // ** handle wrapping
   Game.prototype.move = function() {
     this.ship.move();
     var tempRoids = [];
@@ -67,6 +68,7 @@
   };
 
   Game.prototype.step = function() {
+    this.checkKeyPresses();
     this.move();
     this.draw();
     this.checkCollisions();
@@ -79,22 +81,28 @@
 
     this.interval = setInterval(function() {
       game.step();
-    }, Game.INTERVAL);
+    }, Game.INTERVAL_MILLISECONDS);
   };
 
-  Game.prototype.addKeyBindings = function() {
-    var game = this
-    key('up',    function() { game.ship.yvel -= 0.1 });
-    key('down',  function() { game.ship.yvel += 0.1 });
-    key('left',  function() { game.ship.xvel -= 0.1 });
-    key('right', function() { game.ship.xvel += 0.1 });
-    key('space', function() { game.fireBullet(); })
+  Game.prototype.checkKeyPresses = function() {
+    if(key.isPressed('up')) this.ship.impulse();
+    if(key.isPressed('left')) this.ship.rotate(-10);
+    if(key.isPressed('right')) this.ship.rotate(10);
   }
+
+  Game.prototype.addKeyBindings = function() {
+    var game = this;
+
+    key('space', function() {
+      game.fireBullet();
+    });
+  };
 
   Game.prototype.checkCollisions = function(){
     var game = this;
     this.asteroids.forEach(function(asteroid){
       if (asteroid.isCollidedWith(game.ship)) {
+        console.log("hit, over.");
         //alert("GAME OVER!!!!")
         //game.stop();
       }
@@ -112,7 +120,7 @@
     clearInterval(this.interval);
   }
 
-  Game.INTERVAL = 30;
+  Game.INTERVAL_MILLISECONDS = 30;
   Game.DIM_X = 640;
   Game.DIM_Y = 480;
 })(this);

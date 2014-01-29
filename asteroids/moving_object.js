@@ -1,18 +1,22 @@
 (function(root){
   var Asteroids = root.Asteroids = (root.Asteroids || {});
 
-  var MovingObject = Asteroids.MovingObject = function(xpos,
-                                                       ypos,
-                                                       xvel,
-                                                       yvel,
-                                                       radius,
-                                                       color) {
+  var MovingObject = 
+    Asteroids.MovingObject = function(xpos,
+                                      ypos,
+                                      xvel,
+                                      yvel,
+                                      radius,
+                                      color,
+                                      angle) {
+
     this.xpos = xpos;
     this.ypos = ypos;
     this.xvel = xvel;
     this.yvel = yvel;
     this.radius = radius;
     this.color = color;
+    this.angle = Math.degToRad(angle);
   }
 
   MovingObject.prototype.move = function() {
@@ -21,16 +25,18 @@
   };
 
   MovingObject.prototype.draw = function(ctx) {
-    ctx.fillStyle = this.color;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = 0.5;
+
     ctx.beginPath();
 
     ctx.arc(this.xpos,
             this.ypos,
-            this.radius,
+            this.radius + 1,
             0,
             2 * Math.PI);
 
-    ctx.fill();
+    ctx.stroke();
   };
 
   MovingObject.prototype.isCollidedWith = function (otherObject) {
@@ -39,10 +45,6 @@
 
     var distance = Math.sqrt(dx + dy);
 
-    if ((this.radius + otherObject.radius) > distance) {
-      return true;
-    }
-
-    return false;
+    return ((this.radius + otherObject.radius) > distance);
   };
 })(this);
